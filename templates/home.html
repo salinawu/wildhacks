@@ -2,15 +2,17 @@
 
 <link rel="stylesheet" href="{% static "css/home.css" %}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
-<script src="semantic/dist/semantic.min.js"></script>
-
+<!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css"> -->
 <!-- <link rel="javascript" href="{% static "js/nonsense.js" %}"> -->
+
 <form id="form" onsubmit="return false;">
     <input type="text" id="address" />
     <input type="submit" onclick="geocode();" />
 </form>
-
+<div id="floating-panel">
+     <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+     <button onclick="toggleSeparateArea()">Toggle separation of regions</button>
+</div>
 <head>
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
@@ -25,6 +27,7 @@
 
   var geocoder;
   var map;
+  var heatmap;
   var markers = [];
 
 
@@ -40,6 +43,7 @@
             map: map,
             position: results[0].geometry.location
         });
+        map.setZoom(14)
         markers.push(marker)
       } else {
         alert("Geocode was not successful for the following reason: " + status);
@@ -55,9 +59,51 @@
       center: latlng
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+      data: getPoints(),
+      map: map
+    });
+
+    var rectangle = new google.maps.Rectangle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      map: map,
+      bounds: {
+        north: 41.9,
+        south: 41.7,
+        east: -87.6,
+        west: -87.7
+      }
+    });
+
+    rectangle.addListener('click', showInfo);
+
+  }
+
+  //fixme display info of area, i.e. gangs
+  function showInfo() {
+    alert('hi');
+  }
+
+  // fixme this should be areas of highest risk
+  function getPoints() {
+  return [
+    new google.maps.LatLng(41.8369, -87.6847),
+    new google.maps.LatLng(41.8269, -87.6847),
+    new google.maps.LatLng(41.8169, -87.6847),
+    new google.maps.LatLng(41.8069, -87.6847),
+    new google.maps.LatLng(41.7969, -87.6847)]
+  }
+
+  function toggleHeatmap() {
+    heatmap.setMap(heatmap.getMap() ? null : map);
   }
 
 </script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE4ApaPZF2pyVQYPyPC6X4AnWdySc-584&callback=initMap">
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE4ApaPZF2pyVQYPyPC6X4AnWdySc-584&libraries=visualization&callback=initMap">
 </script>
