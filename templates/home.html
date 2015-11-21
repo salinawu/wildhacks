@@ -1,5 +1,63 @@
 {% load staticfiles %}
 
 <link rel="stylesheet" href="{% static "css/home.css" %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+<script src="semantic/dist/semantic.min.js"></script>
 
-<h1> Hello, this is the home page. </h1>
+<!-- <link rel="javascript" href="{% static "js/nonsense.js" %}"> -->
+<form id="form" onsubmit="return false;">
+    <input type="text" id="address" />
+    <input type="submit" onclick="geocode();" />
+</form>
+
+<head>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 80%; }
+    </style>
+</head>
+<body>
+  <div id="map"></div>
+
+</body>
+<script >
+
+  var geocoder;
+  var map;
+  var markers = [];
+
+
+  function geocode() {
+    var address = document.getElementById("address").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(null);
+        }
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+        markers.push(marker)
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
+
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(41.8369, -87.6847);
+    var mapOptions = {
+      zoom: 10,
+      center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  }
+
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE4ApaPZF2pyVQYPyPC6X4AnWdySc-584&callback=initMap">
+</script>
