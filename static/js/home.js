@@ -42,51 +42,7 @@ function geocode() {
           lowest = [diff,temp_lat,temp_lon];
         }
         console.log(lowest);
-      // min = lowest[0];
-      // console.log(min);
-
       }
-      // for (var k = 0; k <length; k ++){
-      //
-      //
-      //
-      //   if(k == 0){
-      //     lowest = [diff,temp_lat,temp_lon];
-      //   };
-      //   else if(diff <= lowest[0]){
-      //     lowest = [diff,temp_lat,temp_lon];
-
-      //   };
-      // };
-      // min = lowest[0];
-      // console.log(min);
-      // for (var j=0; j<10; j++) {
-      //   // console.log(j);
-      //   var service = new google.maps.DistanceMatrixService;
-      //   service.getDistanceMatrix({
-      //     origins: [results[0].formatted_address],
-      //     destinations: [{lat: stores[j][2], lng:stores[j][3] }],
-      //     travelMode: google.maps.TravelMode.WALKING,
-      //     unitSystem: google.maps.UnitSystem.METRIC,
-      //     avoidHighways: false,
-      //     avoidTolls: false
-      //   }, function(response, status) {
-      //     if (status !== google.maps.DistanceMatrixStatus.OK) {
-      //       alert('Error was: ' + status);
-      //     } else {
-      //       var results = response.rows[0].elements[0];
-      //       var distance = results.distance.text;
-      //       if (init==0) {
-      //         min = distance;
-      //         init =1;
-      //       }
-      //       if (distance < min) {
-      //         final_dest = response.destinationAddresses[0]
-      //         min = distance
-      //       };
-      //     }
-      //   });
-      // };
 
       final_dest = {lat:lowest[1],lng:lowest[2]};
       console.log(lowest);
@@ -145,29 +101,6 @@ function initMap() {
   var gradient = [
     'rgb(251, 209, 65)',
   	'rgba(0, 255, 255, 0)'
-    // 'rgba(0, 255, 255, 1)',
-   //  'rgba(0, 191, 255, 1)',
-   //  'rgba(0, 127, 255, 1)',
-   //  'rgba(0, 63, 255, 1)',
-   //  'rgba(0, 0, 255, 1)',
-   //  'rgba(0, 0, 223, 1)',
-   //  'rgba(0, 0, 191, 1)',
-   //  'rgba(0, 0, 159, 1)',
-   //  'rgba(0, 0, 127, 1)',
-   //  'rgba(63, 0, 91, 1)',
-   //  'rgba(127, 0, 63, 1)',
-   //  'rgba(191, 0, 31, 1)',
-   //  'rgba(255, 0, 0, 1)']
-		// 'rgb(255, 225, 101)',
-
-		// 'rgb(248, 193, 94)'
-		// 'rgb(241, 161, 87)',
-		// 'rgb(238, 145, 83)',
-		// 'rgb(235, 129, 80)',
-		// 'rgb(231, 113, 76)',
-		// 'rgb(228, 97, 73)',
-		// 'rgb(225, 81, 61)',
-		// 'rgb(222, 66, 66)'
 	]
 	heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 
@@ -249,9 +182,3 @@ for (var i = 0; i< stores.length; i ++){
 }
 return heat
 }
-
-
-// COLOR GRADIENTS: BOURBON 1. #EC6F66, #F3A183
-//#d53369,  #cbad6d
-//yellow -> red
-// #c21500,  #ffc500
