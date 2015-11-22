@@ -9,6 +9,7 @@ var address;
 var final_dest;
 var min;
 var init = 0;
+var groc_image;
 
 function geocode() {
   address = document.getElementById("address").value;
@@ -22,7 +23,7 @@ function geocode() {
           map: map,
           position: results[0].geometry.location
       });
-      map.setZoom(14);
+      map.setZoom(16);
       markers.push(marker);
       console.log(results[0].formatted_address);
       var length = stores.length;
@@ -85,7 +86,7 @@ function initMap() {
     map: map
   });
 
-  var groc_image = {
+  groc_image = {
     url: 'static/images/groc_store_final.png',
     // This marker is 20 pixels wide by 32 pixels high.
     size: new google.maps.Size(35, 32),
