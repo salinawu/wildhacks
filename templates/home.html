@@ -9,11 +9,14 @@
 
 <link rel="javascript" href="{% static "js/nonsense.js" %}">
 
-<form id="form" onsubmit="return false;">
+<!-- <form id="form" onsubmit="return false;">
     <input type="text" id="address" />
     <input type="submit" onclick="geocode();" />
-</form>
-
+</form> -->
+<style type="text/css">
+  html, body { height: 100%; margin: 0; padding: 0; }
+  #map { height: 100%; }
+</style>
 
 <body>
 <div class="main ui container">
@@ -42,10 +45,10 @@
 	<div class="ui divider"></div>
 
 <!-- Toggle Buttons -->
-<div class="ui grey two top attached buttons" id="floating-panel">
+<div class="ui grey three top attached buttons" id="floating-panel">
      <div class="ui button toggle" onclick="toggleHeatmap()">Toggle Heatmap</div>
-     <div class="ui button toggle" onclick="toggleSeparateArea()">Toggle separation of regions</div>
-     <div class="ui button toggle" onclick="toggleGrocerymap()"> Toggle Grovery Stores </div>
+     <div class="ui button toggle" onclick="toggleKMLmap()">Toggle gang regions</div>
+     <div class="ui button toggle" onclick="toggleGrocerymap()"> Toggle Grocery Stores </div>
 </div>
 
 
@@ -81,103 +84,20 @@
   </div>
 </div>
 </body>
-<script>
-
-  var geocoder;
-  var map;
-  var heatmap;
-  var markers = [];
 
 
-  function geocode() {
-    var address = document.getElementById("address").value;
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(null);
-        }
-        map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
-        map.setZoom(14)
-        markers.push(marker)
-      } else {
-        alert("Geocode was not successful for the following reason: " + status);
-      }
-    });
-  }
-
-  function initMap() {
-    geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(41.8369, -87.6847);
-    var mapOptions = {
-      zoom: 10,
-      center: latlng
-    }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: getPoints(),
-      map: map
-    });
-
-    var rectangle = new google.maps.Rectangle({
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35,
-      map: map,
-      bounds: {
-        north: 41.9,
-        south: 41.7,
-        east: -87.6,
-        west: -87.7
-      }
-    });
-
-    rectangle.addListener('click', showInfo);
-
-  }
-
-  //fixme display info of area, i.e. gangs
-  function showInfo() {
-    alert('hi');
-  }
-
-  // fixme this should be areas of highest risk
-  function getPoints() {
-  return [
-    new google.maps.LatLng(41.8369, -87.6847),
-    new google.maps.LatLng(41.8269, -87.6847),
-    new google.maps.LatLng(41.8169, -87.6847),
-    new google.maps.LatLng(41.8069, -87.6847),
-    new google.maps.LatLng(41.7969, -87.6847)]
-  }
-
-  function toggleHeatmap() {
-    heatmap.setMap(heatmap.getMap() ? null : map);
-  }
-/*
-
-  function whyModal(){
-	  $('.ui.modal').modal('show');
-  }
-*/
-$(document).ready(function(){
-     $('#whymodal').click(function(){
-        $('#displayModal').modal({
-    blurring: true
-  })
-  .modal('show');
-     });
-});
-  <div id="map"></div>
 </body>
 <script>
   var stores = {{groc_stores|safe}}
+
+  $(document).ready(function(){
+       $('#whymodal').click(function(){
+          $('#displayModal').modal({
+      blurring: true
+    })
+    .modal('show');
+       });
+  });
 </script>
 <script src="{% static "js/home.js" %}"></script>
 <script async defer
