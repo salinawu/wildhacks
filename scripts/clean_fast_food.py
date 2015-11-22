@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Sat Nov 21 20:10:08 2015
+
+@author: kzen
+"""
+
+# -*- coding: utf-8 -*-
 import pandas as pd
 import imp
 import sqlite3
@@ -7,7 +14,7 @@ from sqlalchemy import create_engine
 
 
 PATH_ROOT = "/home/kzen/repos/wildhacks/"
-FILE_PATH_IND = PATH_ROOT+ "data/Nearby_Independent_Cook_County_Grocery_Stores.csv"
+FILE_PATH_FAST = PATH_ROOT+ "data/fastfoodmaps_locations_2007.csv"
 FILE_PATH_REG = PATH_ROOT+ "data/Grocery_Stores2013.csv"
 FILE_PATH_CHAIN = PATH_ROOT+ "data/Nearby_Cook_County_Grocery_Store_Chains.csv"
 
@@ -39,7 +46,7 @@ def add_name(df,name):
 if __name__ == "__main__":
         
     # INDEPENDENT STORES
-    df_ind = pd.read_csv(FILE_PATH_IND)
+    df_ind = pd.read_csv(FILE_PATH_IND)n
     df_ind["LATITUDE"] = df_ind["LOCATION"].apply(func = get_lat_ind)
     df_ind["LONGITUDE"] = df_ind["LOCATION"].apply(func = get_long_ind)
     df_ind = add_name(df_ind,"ind_grocery")
@@ -67,12 +74,5 @@ if __name__ == "__main__":
 
     conn = c.connection
     df_final.to_sql("stores", con = conn)
-#
-# Fast food maps need to be cleaned datasets[1]
-# Nearby_Cook_County_Grocery_Store_Chains.csv need to extract lat long
-# Nearby_Independent_Cook_County_Grocery_Stores.csv
-    
-#    df_list = []
-#    for df_name in configs.datasets:
-#         df_list.append(pd.read_csv(PATH_ROOT + "data/"+df_name))
+
 
