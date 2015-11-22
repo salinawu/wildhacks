@@ -6,6 +6,9 @@ var markers = [];
 var grocery = [];
 var ff = [];
 var address;
+var final_dest;
+var min;
+var init = 0;
 
 function geocode() {
   address = document.getElementById("address").value;
@@ -21,27 +24,40 @@ function geocode() {
       });
       map.setZoom(14);
       markers.push(marker);
-      console.log(document.getElementById('address').value);
-      var service = new google.maps.DistanceMatrixService;
-      service.getDistanceMatrix({
-        origins: [document.getElementById('address').value],
-        destinations: [("27.111","45.222")],
-        travelMode: google.maps.TravelMode.WALKING,
-        unitSystem: google.maps.UnitSystem.METRIC,
-        avoidHighways: false,
-        avoidTolls: false
-      }, function(response, status) {
-        if (status !== google.maps.DistanceMatrixStatus.OK) {
-          alert('Error was: ' + status);
-        } else {
-          console.log(response);
-          var results = response.rows[0].elements[0];
-          console.log(results);
-          var distance = results.distance.text;
-          console.log(response)
-          console.log(distance);
-        }
-      });
+      console.log(results[0].formatted_address);
+      var length = stores.length;
+      for (var j=0; j<10; j++) {
+        // console.log(j);
+        var service = new google.maps.DistanceMatrixService;
+        service.getDistanceMatrix({
+          origins: [results[0].formatted_address],
+          destinations: [{lat: stores[j][2], lng:stores[j][3] }],
+          travelMode: google.maps.TravelMode.WALKING,
+          unitSystem: google.maps.UnitSystem.METRIC,
+          avoidHighways: false,
+          avoidTolls: false
+        }, function(response, status) {
+          if (status !== google.maps.DistanceMatrixStatus.OK) {
+            alert('Error was: ' + status);
+          } else {
+            var results = response.rows[0].elements[0];
+            var distance = results.distance.text;
+            if (init==0) {
+              min = distance;
+              init =1;
+            }
+            if (distance < min) {
+              final_dest = response.destinationAddresses[0]
+              min = distance
+            };
+          }
+        });
+      };
+      var directionsService = new google.maps.DirectionsService;
+      var directionsDisplay = new google.maps.DirectionsRenderer;
+      console.log(final_dest);
+      directionsDisplay.setMap(map);
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
     } else {
       alert("Geocode was not successful for the following reason: " + status);
     }
@@ -81,22 +97,8 @@ function initMap() {
     grocery.push(groc);
   }
 
-
-
-  // len = fast_food.length;
-  // for (var i = 0; i<len; i++) {
-  //   console.log(len)
-  //   var fast = new google.maps.Marker({
-  //      position: {lat: fast_food[i][1], lng:fast_food[i][2] },
-  //      map: map,
-  //     //  icon: groc_image
-  //   });
-  //   ff.push(fast);
-  // }
-
   var gradient = [
     'rgb(251, 209, 65)',
-
   	'rgba(0, 255, 255, 0)'
     // 'rgba(0, 255, 255, 1)',
    //  'rgba(0, 191, 255, 1)',
@@ -123,9 +125,23 @@ function initMap() {
 		// 'rgb(222, 66, 66)'
 	]
 	heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+
 }
 
-
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  alert('hi');
+  directionsService.route({
+    origin: document.getElementById('address').value,
+    destination: final_dest,
+    travelMode: google.maps.TravelMode.WALKING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
 
 var styleArray = [
   {
@@ -134,7 +150,6 @@ var styleArray = [
       { hue: "#84243b"},
       { saturation: -85 },
       {invert_lightness:true}
-
     ]
   },{
     featureType: "road.arterial",
@@ -189,8 +204,6 @@ for (var i = 0; i< stores.length; i ++){
 }
 return heat
 }
-
-
 
 
 // COLOR GRADIENTS: BOURBON 1. #EC6F66, #F3A183
