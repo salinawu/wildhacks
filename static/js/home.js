@@ -31,22 +31,24 @@ function geocode() {
 
       var cur_lat = results[0].geometry.location.lat();
       var cur_lon = results[0].geometry.location.lng();
+
       var lowest = []
       for (var k = 0; k < length; k++){
         var temp_lat = stores[k][2];
         var temp_lon = stores[k][3];
-        var diff = Math.abs(temp_lat+temp_lon - cur_lat-cur_lon);
+        var diff = Math.abs(temp_lat + temp_lon - cur_lat-cur_lon);
         if(k ==0 || diff<= lowest[0]){
           lowest = [diff,temp_lat,temp_lon];
         }
-      min = lowest[0];
-      console.log(min);
+        console.log(lowest);
+      // min = lowest[0];
+      // console.log(min);
 
       }
       // for (var k = 0; k <length; k ++){
-      //  
-      //   
-      //   
+      //
+      //
+      //
       //   if(k == 0){
       //     lowest = [diff,temp_lat,temp_lon];
       //   };
@@ -85,7 +87,8 @@ function geocode() {
       //   });
       // };
 
-      final_dest = [String(lowest[1]),String(lowest[2])];
+      final_dest = {lat:lowest[1],lng:lowest[2]};
+      console.log(lowest);
       var directionsService = new google.maps.DirectionsService;
       var directionsDisplay = new google.maps.DirectionsRenderer;
       directionsDisplay.setMap(map);
