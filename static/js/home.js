@@ -36,7 +36,8 @@ function geocode() {
       for (var k = 0; k < length; k++){
         var temp_lat = stores[k][2];
         var temp_lon = stores[k][3];
-        var diff = Math.abs(temp_lat + temp_lon - cur_lat-cur_lon);
+        var diff = Math.sqrt( (temp_lat-cur_lat)*(temp_lat-cur_lat) + (temp_lon-cur_lon)*(temp_lon-cur_lon) )
+        // var diff = Math.abs(temp_lat + temp_lon - cur_lat-cur_lon);
         if(k ==0 || diff<= lowest[0]){
           lowest = [diff,temp_lat,temp_lon];
         }
