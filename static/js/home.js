@@ -82,7 +82,7 @@ function initMap() {
   });
 
   gangLayer = new google.maps.KmlLayer({
-    url: 'https://raw.githubusercontent.com/salinawu/wildhacks/master/chicago_gang_map.kml',
+    url: 'https://raw.githubusercontent.com/salinawu/wildhacks/master/new_chicago_gang_map.kml',
     map: map
   });
 
