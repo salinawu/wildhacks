@@ -67,12 +67,4 @@ if __name__ == "__main__":
 
     conn = c.connection
     df_final.to_sql("stores", con = conn)
-#
-# Fast food maps need to be cleaned datasets[1]
-# Nearby_Cook_County_Grocery_Store_Chains.csv need to extract lat long
-# Nearby_Independent_Cook_County_Grocery_Stores.csv
-    
-#    df_list = []
-#    for df_name in configs.datasets:
-#         df_list.append(pd.read_csv(PATH_ROOT + "data/"+df_name))
 
