@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Sat Nov 21 20:10:08 2015
+
+@author: kzen
+"""
+
+# -*- coding: utf-8 -*-
 import pandas as pd
 import imp
 import sqlite3
@@ -7,7 +14,7 @@ from sqlalchemy import create_engine
 
 
 PATH_ROOT = "/home/kzen/repos/wildhacks/"
-FILE_PATH_IND = PATH_ROOT+ "data/Nearby_Independent_Cook_County_Grocery_Stores.csv"
+FILE_PATH_FAST = PATH_ROOT+ "data/fastfoodmaps_locations_2007.csv"
 FILE_PATH_REG = PATH_ROOT+ "data/Grocery_Stores2013.csv"
 FILE_PATH_CHAIN = PATH_ROOT+ "data/Nearby_Cook_County_Grocery_Store_Chains.csv"
 
