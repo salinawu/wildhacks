@@ -18,8 +18,11 @@ FILE_PATH_FAST = PATH_ROOT+ "data/fastfoodmaps_locations_2007.csv"
 FILE_PATH_INSP = PATH_ROOT+ "data/Food_Inspections.csv"
 
 DB_FILE = PATH_ROOT+ "db.sqlite3"
+
+cluster_list = []
 #CONFIGS_PATH = PATH_ROOT + "scripts/configs.py"
 #configs = imp.load_source("configs", CONFIGS_PATH)
+
 
 def get_lat_fast(df):
     return float(df.split()[0].strip("(,)"))
@@ -40,7 +43,38 @@ def add_name(df,name):
     type_list = [name for row in range(0,len(df.index))]
     df["STORE_TYPE"] = pd.Series(type_list,index = df.index)
     return df[["STORE_TYPE","LATITUDE","LONGITUDE"]]
+
+def cluster_helper(row):
+    row.LATITUDE < cluster_list[0]+0.1 and row.LATITUDE > cluster_list[0] - 0.1
+    if row.LATITUDE < cluster_list[0]+0.1 and row.LATITUDE > cluster_list[0] - 0.1:
+        return True
+    elif row.LONGITUDE < cluster_list[1]+0.1 and row.LONGITUDE > cluster_list[1] - 0.1:
+        return True
+    return False
+#    start = 0
+#    curr = row.LATITUDE
+#    for a in str(row.LATITUDE):
+#        if a == ".":
+#            start +=1
+#            break
+#        start +=1
+#    decimal = len(str(row.LATITUDE)) - start
+#    for i in range(1,5):
+#        bound = i/decimal
+#        if curr+bound in cluster_list or curr-bound in cluster_list:
+#            return True
+#        cluster_list.append(curr+bound)
+#        cluster_list.append(curr-bound)
+#    return False
     
+def cluster(df):
+    for index, row in df.iterrows():
+        cluster_list.append(row.LATITUDE)
+        clust_list.append(row.LONGITUDE)
+    df["remove"] = df.apply(func = cluster_helper, axis = 1)
+    df = df[df["remove"] == True]
+    df = df[["LATITUDE", "LONGITUDE"]]
+    return df
     
 if __name__ == "__main__":
         
@@ -61,6 +95,9 @@ if __name__ == "__main__":
     df_final = df_final.append(df_fast)
     df_final = df_final.append(df_insp)
     df_final = df_final.reset_index(drop = True)
+    df_final = df_final.drop_duplicates()
+    df_final = df_final.drop_duplicates(subset = "LATITUDE")
+    df_final = df_final.drop_duplicates(subset = "LONGITUDE")
 
 
     engine = create_engine('sqlite:///'+ DB_FILE)
@@ -69,4 +106,5 @@ if __name__ == "__main__":
     conn = c.connection
     df_final.to_sql("restaurants", con = conn)
 
+#    df_final = cluster(df_final)
 

@@ -31,14 +31,16 @@ function initMap() {
   geocoder = new google.maps.Geocoder();
   var latlng = new google.maps.LatLng(41.8369, -87.6847);
   var mapOptions = {
-    zoom: 13,
-    center: latlng
+    zoom: 10,
+    center: latlng,
+    styles: styleArray
   }
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
   heatmap = new google.maps.visualization.HeatmapLayer({
     data: getPoints(),
-    map: map
+    map: map,
+    gradient: gradient
   });
 
   gangLayer = new google.maps.KmlLayer({
@@ -58,48 +60,6 @@ function initMap() {
     grocery.push(groc);
   }
 
-  var service = new google.maps.DistanceMatrixService;
-  service.getDistanceMatrix({
-   origins: address,
-   destinations: "5717 South Kimbark Ave",
-   travelMode: google.maps.TravelMode.WALKING,
-   unitSystem: google.maps.UnitSystem.METRIC,
-   avoidHighways: false,
-   avoidTolls: false
- },function(response, status) {
-    if (status !== google.maps.DistanceMatrixStatus.OK) {
-      alert('Error was: ' + status);
-    } else {
-      var originList = response.originAddresses;
-      var destinationList = response.destinationAddresses;
-
-      var showGeocodedAddressOnMap = function(asDestination) {
-        var icon = asDestination ? destinationIcon : originIcon;
-        return function(results, status) {
-          if (status === google.maps.GeocoderStatus.OK) {
-            map.fitBounds(bounds.extend(results[0].geometry.location));
-            markersArray.push(new google.maps.Marker({
-              map: map,
-              position: results[0].geometry.location,
-              icon: icon
-            }));
-          } else {
-            alert('Geocode was not successful due to: ' + status);
-          }
-        };
-      };
-
-      for (var j = 0; j < results.length; j++) {
-        geocoder.geocode({'address': destinationList[j]},
-            showGeocodedAddressOnMap(true));
-        outputDiv.innerHTML += originList + ' to ' + destinationList[j] +
-            ': ' + results[j].distance.text + ' in ' +
-            results[j].duration.text + '<br>';
-      }
-    }
-  });
-}
-
 
   // len = fast_food.length;
   // for (var i = 0; i<len; i++) {
@@ -112,13 +72,69 @@ function initMap() {
   //   ff.push(fast);
   // }
 
+  var gradient = [
+    'rgb(251, 209, 65)',
+
+  	'rgba(0, 255, 255, 0)'
+    // 'rgba(0, 255, 255, 1)',
+   //  'rgba(0, 191, 255, 1)',
+   //  'rgba(0, 127, 255, 1)',
+   //  'rgba(0, 63, 255, 1)',
+   //  'rgba(0, 0, 255, 1)',
+   //  'rgba(0, 0, 223, 1)',
+   //  'rgba(0, 0, 191, 1)',
+   //  'rgba(0, 0, 159, 1)',
+   //  'rgba(0, 0, 127, 1)',
+   //  'rgba(63, 0, 91, 1)',
+   //  'rgba(127, 0, 63, 1)',
+   //  'rgba(191, 0, 31, 1)',
+   //  'rgba(255, 0, 0, 1)']
+		// 'rgb(255, 225, 101)',
+
+		// 'rgb(248, 193, 94)'
+		// 'rgb(241, 161, 87)',
+		// 'rgb(238, 145, 83)',
+		// 'rgb(235, 129, 80)',
+		// 'rgb(231, 113, 76)',
+		// 'rgb(228, 97, 73)',
+		// 'rgb(225, 81, 61)',
+		// 'rgb(222, 66, 66)'
+	]
+	heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
+
+
+
+var styleArray = [
+  {
+    featureType: "all",
+    stylers: [
+      { hue: "#84243b"},
+      { saturation: -85 },
+      {invert_lightness:true}
+
+    ]
+  },{
+    featureType: "road.arterial",
+    elementType: "geometry",
+    stylers: [
+      { hue: "#00ffee" },
+      { saturation: 20 }
+    ]
+  },{
+    featureType: "poi.business",
+    elementType: "labels",
+    stylers: [
+      { visibility: "off" }
+    ]
+  }
+];
 
 function toggleHeatmap() {
   heatmap.setMap(heatmap.getMap() ? null : map);
 }
 
 function toggleKMLmap() {
-  console.log(current);
   gangLayer.setMap(gangLayer.getMap() ? null : map);
 }
 
@@ -144,10 +160,19 @@ function toggleGrocerymap(){
 
 // fixme this should be areas of highest risk
 function getPoints() {
-return [
-  new google.maps.LatLng(41.8369, -87.6847),
-  new google.maps.LatLng(41.8269, -87.6847),
-  new google.maps.LatLng(41.8169, -87.6847),
-  new google.maps.LatLng(41.8069, -87.6847),
-  new google.maps.LatLng(41.7969, -87.6847)]
+var heat = []
+
+for (var i = 0; i< stores.length; i ++){
+	heat.push( new google.maps.LatLng(stores[i][2],stores[i][3]))
 }
+console.log(heat)
+return heat
+}
+
+
+
+
+// COLOR GRADIENTS: BOURBON 1. #EC6F66, #F3A183
+//#d53369,  #cbad6d
+//yellow -> red
+// #c21500,  #ffc500
