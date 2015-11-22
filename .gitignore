@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyc
 
 # C extensions
 *.so
@@ -56,6 +57,7 @@ docs/_build/
 # PyBuilder
 target/
 
+db.sqlite3
+secrets.txt
 data/*.csv
 
-#db.sqlite3

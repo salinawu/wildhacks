@@ -1,8 +1,14 @@
 {% load staticfiles %}
 
-<link rel="stylesheet" href="{% static "css/home.css" %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css"> -->
+<<<<<<< HEAD
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.js"></script>
+<!-- <link rel="javascript" href="{% static "js/nonsense.js" %}"> -->
+<link rel="stylesheet" href="{% static "css/home.css" %}">
+
+=======
 <link rel="javascript" href="{% static "js/nonsense.js" %}">
 
 <form id="form" onsubmit="return false;">
@@ -13,6 +19,7 @@
      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
      <button onclick="toggleKMLmap()">Toggle separation of regions</button>
 </div>
+>>>>>>> salinamaster/master
 <head>
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
@@ -20,9 +27,169 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD
+<div class="main ui container">
+<!-- 	Header -->
+	<div class="ui fixed inverted main menu">
+		<div class="item">Header</div>
+<!-- 		Modal Display -->
+		<a class="item" id="whymodal">Why Food Deserts?</a>
+
+		<div class="right menu"></div>
+	</div>
+	<div class="pusher"></div>
+	
+<!-- Rest of Body -->
+	<h1 class="ui header"> South Side Food Deserts</h1>
+
+<!-- 	Input Your Address -->
+	<div class="inputBox">
+		<form id="form" onsubmit="return false;">
+		<div class="ui input">
+	    	<input type="text" placeholder="Input your Address" id="address"/>
+	    	<input type="submit" onclick="geocode();"/>
+	    </div>
+		</form>
+	</div>
+	<div class="ui divider"></div>
+
+<!-- Toggle Buttons -->
+<div class="ui grey two top attached buttons" id="floating-panel">
+     <div class="ui button toggle" onclick="toggleHeatmap()">Toggle Heatmap</div>
+     <div class="ui button toggle" onclick="toggleSeparateArea()">Toggle separation of regions</div>
+</div>
+
+
+  <div id="map"></div>
+</div>
+<div class="ui long scrolling modal" id="displayModal">
+  <i class="close icon"></i>
+  <div class="header">
+  	Why should we care about food deserts?
+  </div>
+  <div class="image content">
+    <div class="ui medium image" id="modalwidth">
+      <img src="http://chicagostories.org/wp-content/uploads/2012/04/BP-food-desert-578x433.jpg"/>
+    </div>
+    <div class="container description" id="textwidth">
+			<blockquote>Jacqueline Christian is another Houston mother who has a full-time job, drives a comfortable sedan, and wears flattering clothes. ... Christian worries about not having enough food “about half of the year.”
+	... Her schedule, as much as her wages, influences what she eats. To save time she often relies on premade food from grocery stores. “You can’t go all the way home and cook,” she says. <p></p>
+		
+		On a day that includes running a dozen errands and charming her payday loan officer into giving her an extra day, Christian picks up Ja’Zarrian and her seven-year-old, Jerimiah, after school. As the sun drops in the sky, Jerimiah begins complaining that he’s hungry. The neon glow of a Hartz Chicken Buffet appears up the road, and he starts in: Can’t we just get some gizzards, please? <p></p>
+		
+		Christian pulls into the drive-through and orders a combo of fried gizzards and okra for $8.11. It takes three declined credit cards and an emergency loan from her mother, who lives nearby, before she can pay for it. When the food finally arrives, filling the car with the smell of hot grease, there’s a collective sense of relief. On the drive back to the shelter the boys eat until the gizzards are gone, and then drift off to sleep. <p></p>
+		
+		Christian says she knows she can’t afford to eat out and that fast food isn’t a healthy meal. But she’d felt too stressed—by time, by Jerimiah’s insistence, by how little money she has—not to give in. “Maybe I can’t justify that to someone who wasn’t here to see, you know?” she says. “But I couldn’t let them down and not get the food.”</blockquote>
+		<div class="ui segment">
+			<div class="ui right floated statistic">
+				<div class="value">400000</div>
+				<div class="label">in Chicago</div>
+			</div>
+			<p>“Food Deserts” – communities with little or no access to grocery stores and quality, nutritious food choices. </p>
+			<p> In a city of roughly 3 million people, more than half of those that live there live in situations where they do not have access to a nutritious diet. This is a public health problem. People living in food deserts face twice as high a risk of cardiovascular disease. Much of Chicago's food deserts are located on the South Side. Even those that can afford to go to grocery stores, often do not have time to and often have to jump through hoops just to access them. Sometimes grocery stores are even in gang territory. Our goal is to provide a visualization mechanism to see what the problem is like on an everyday level. We often get caught up in the statistics, and the notion of going to bed hungry is so foreign to us that it has prevented us from engaging the issue. This is an attempt to help people visualize the problems of living in a food desert on the South Side of Chicago.</p>
+		</div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+
+  var geocoder;
+  var map;
+  var heatmap;
+  var markers = [];
+
+
+  function geocode() {
+    var address = document.getElementById("address").value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(null);
+        }
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+        map.setZoom(14)
+        markers.push(marker)
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
+  }
+
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(41.8369, -87.6847);
+    var mapOptions = {
+      zoom: 10,
+      center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+      data: getPoints(),
+      map: map
+    });
+
+    var rectangle = new google.maps.Rectangle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      map: map,
+      bounds: {
+        north: 41.9,
+        south: 41.7,
+        east: -87.6,
+        west: -87.7
+      }
+    });
+
+    rectangle.addListener('click', showInfo);
+
+  }
+
+  //fixme display info of area, i.e. gangs
+  function showInfo() {
+    alert('hi');
+  }
+
+  // fixme this should be areas of highest risk
+  function getPoints() {
+  return [
+    new google.maps.LatLng(41.8369, -87.6847),
+    new google.maps.LatLng(41.8269, -87.6847),
+    new google.maps.LatLng(41.8169, -87.6847),
+    new google.maps.LatLng(41.8069, -87.6847),
+    new google.maps.LatLng(41.7969, -87.6847)]
+  }
+
+  function toggleHeatmap() {
+    heatmap.setMap(heatmap.getMap() ? null : map);
+  }
+/*
+  
+  function whyModal(){
+	  $('.ui.modal').modal('show');
+  }
+*/
+$(document).ready(function(){
+     $('#whymodal').click(function(){
+        $('#displayModal').modal({
+    blurring: true
+  })
+  .modal('show');    
+     });
+});
+=======
   <div id="map"></div>
 </body>
 <script src="{% static "js/home.js" %}">
+>>>>>>> salinamaster/master
 
 </script>
 <script async defer
