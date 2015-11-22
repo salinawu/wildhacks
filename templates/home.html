@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{% static "css/home.css" %}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css"> -->
-<!-- <link rel="javascript" href="{% static "js/nonsense.js" %}"> -->
+<link rel="javascript" href="{% static "js/nonsense.js" %}">
 
 <form id="form" onsubmit="return false;">
     <input type="text" id="address" />
@@ -11,7 +11,7 @@
 </form>
 <div id="floating-panel">
      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-     <button onclick="toggleSeparateArea()">Toggle separation of regions</button>
+     <button onclick="toggleKMLmap()">Toggle separation of regions</button>
 </div>
 <head>
     <style type="text/css">
@@ -21,87 +21,8 @@
 </head>
 <body>
   <div id="map"></div>
-
 </body>
-<script >
-
-  var geocoder;
-  var map;
-  var heatmap;
-  var markers = [];
-
-
-  function geocode() {
-    var address = document.getElementById("address").value;
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(null);
-        }
-        map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
-        map.setZoom(14)
-        markers.push(marker)
-      } else {
-        alert("Geocode was not successful for the following reason: " + status);
-      }
-    });
-  }
-
-  function initMap() {
-    geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(41.8369, -87.6847);
-    var mapOptions = {
-      zoom: 10,
-      center: latlng
-    }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: getPoints(),
-      map: map
-    });
-
-    var rectangle = new google.maps.Rectangle({
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35,
-      map: map,
-      bounds: {
-        north: 41.9,
-        south: 41.7,
-        east: -87.6,
-        west: -87.7
-      }
-    });
-
-    rectangle.addListener('click', showInfo);
-
-  }
-
-  //fixme display info of area, i.e. gangs
-  function showInfo() {
-    alert('hi');
-  }
-
-  // fixme this should be areas of highest risk
-  function getPoints() {
-  return [
-    new google.maps.LatLng(41.8369, -87.6847),
-    new google.maps.LatLng(41.8269, -87.6847),
-    new google.maps.LatLng(41.8169, -87.6847),
-    new google.maps.LatLng(41.8069, -87.6847),
-    new google.maps.LatLng(41.7969, -87.6847)]
-  }
-
-  function toggleHeatmap() {
-    heatmap.setMap(heatmap.getMap() ? null : map);
-  }
+<script src="{% static "js/home.js" %}">
 
 </script>
 <script async defer
