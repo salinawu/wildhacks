@@ -78,17 +78,17 @@
 				<div class="label">in Chicago</div>
 			</div>
 			<p>“Food Deserts” – communities with little or no access to grocery stores and quality, nutritious food choices. </p>
-			<p> In a city of roughly 3 million people, more than half of those that live there live in situations where they do not have access to a nutritious diet. This is a public health problem. People living in food deserts face twice as high a risk of cardiovascular disease. Much of Chicago's food deserts are located on the South Side. Even those that can afford to go to grocery stores, often do not have time to and often have to jump through hoops just to access them. Sometimes grocery stores are even in gang territory. Our goal is to provide a visualization mechanism to see what the problem is like on an everyday level. We often get caught up in the statistics, and the notion of going to bed hungry is so foreign to us that it has prevented us from engaging the issue. This is an attempt to help people visualize the problems of living in a food desert on the South Side of Chicago.</p>
+			<p> In a city of roughly 3 million people, more than half of those who live there live in situations where they do not have access to a nutritious diet. This is a public health problem. People living in food deserts face twice as high a risk of cardiovascular disease. Many of Chicago's food deserts are located on the South Side. Even those who can afford to go to grocery stores often do not have time to do so and must jump through hoops just to access them. Sometimes, grocery stores are even in gang territory. Our goal is to provide a visualization mechanism to see what the problem is like on an everyday level. We often get caught up in the statistics, and the notion of going to bed hungry is so foreign to us that it has prevented us from engaging the issue. This is an attempt to help people visualize the problems of living in a food desert on the South Side of Chicago.</p>
 		</div>
     </div>
   </div>
 </div>
 </body>
 
-
 </body>
 <script>
   var stores = {{groc_stores|safe}}
+  var fast_food = {{restaurants|safe}}
 
   $(document).ready(function(){
        $('#whymodal').click(function(){

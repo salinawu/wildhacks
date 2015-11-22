@@ -19,6 +19,8 @@ def home(request):
 	for i in stores:
 		groc_stores.append([i[0], 'grocery', i[2], i[3]])
 
+	restaurants = c.execute("SELECT * FROM restaurants")
+	restaurants = restaurants.fetchall()
 	conn.commit()
 	conn.close()
 
