@@ -57,5 +57,11 @@ docs/_build/
 # PyBuilder
 target/
 
+<<<<<<< HEAD
 db.sqlite3
 secrets.txt
+=======
+data/*.csv
+
+#db.sqlite3
+>>>>>>> salinamaster/master

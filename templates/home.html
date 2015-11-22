@@ -3,10 +3,23 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css"> -->
+<<<<<<< HEAD
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.js"></script>
 <!-- <link rel="javascript" href="{% static "js/nonsense.js" %}"> -->
 <link rel="stylesheet" href="{% static "css/home.css" %}">
 
+=======
+<link rel="javascript" href="{% static "js/nonsense.js" %}">
+
+<form id="form" onsubmit="return false;">
+    <input type="text" id="address" />
+    <input type="submit" onclick="geocode();" />
+</form>
+<div id="floating-panel">
+     <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+     <button onclick="toggleKMLmap()">Toggle separation of regions</button>
+</div>
+>>>>>>> salinamaster/master
 <head>
     <style type="text/css">
       html, body { height: 100%; margin: 0; padding: 0; }
@@ -14,6 +27,7 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 <div class="main ui container">
 <!-- 	Header -->
 	<div class="ui fixed inverted main menu">
@@ -171,6 +185,11 @@ $(document).ready(function(){
   .modal('show');    
      });
 });
+=======
+  <div id="map"></div>
+</body>
+<script src="{% static "js/home.js" %}">
+>>>>>>> salinamaster/master
 
 </script>
 <script async defer
