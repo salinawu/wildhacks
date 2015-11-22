@@ -19,8 +19,29 @@ function geocode() {
           map: map,
           position: results[0].geometry.location
       });
-      map.setZoom(14)
-      markers.push(marker)
+      map.setZoom(14);
+      markers.push(marker);
+      console.log(document.getElementById('address').value);
+      var service = new google.maps.DistanceMatrixService;
+      service.getDistanceMatrix({
+        origins: [document.getElementById('address').value],
+        destinations: [("27.111","45.222")],
+        travelMode: google.maps.TravelMode.WALKING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+        avoidHighways: false,
+        avoidTolls: false
+      }, function(response, status) {
+        if (status !== google.maps.DistanceMatrixStatus.OK) {
+          alert('Error was: ' + status);
+        } else {
+          console.log(response);
+          var results = response.rows[0].elements[0];
+          console.log(results);
+          var distance = results.distance.text;
+          console.log(response)
+          console.log(distance);
+        }
+      });
     } else {
       alert("Geocode was not successful for the following reason: " + status);
     }
@@ -59,6 +80,7 @@ function initMap() {
     });
     grocery.push(groc);
   }
+
 
 
   // len = fast_food.length;
@@ -165,7 +187,6 @@ var heat = []
 for (var i = 0; i< stores.length; i ++){
 	heat.push( new google.maps.LatLng(stores[i][2],stores[i][3]))
 }
-console.log(heat)
 return heat
 }
 
