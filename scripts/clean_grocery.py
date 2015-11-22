@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-import imp
+import imp, sys
 import sqlite3
 import mysql.connector
 from sqlalchemy import create_engine
 
+#from fooddeserts.models import *
 
 PATH_ROOT = "/home/kzen/repos/wildhacks/"
 FILE_PATH_IND = PATH_ROOT+ "data/Nearby_Independent_Cook_County_Grocery_Stores.csv"
@@ -35,6 +36,17 @@ def add_name(df,name):
     df["STORE_TYPE"] = pd.Series(type_list,index = df.index)
     return df[["STORE_TYPE","LATITUDE","LONGITUDE"]]
     
+#def add_store_helper(store,lat,lon):
+#    s = Stores.objects.get_or_create(store_type = store, latitude = lat, longitude = lon )
+#    return s
+#    
+#def add_stores(df):
+#    for index,row in df.iterrows():
+#        store = row.STORE_TYPE
+#        lat = row.LATITUDE
+#        lon = row.LONGITUDE
+#        add_store_helper(store,lat,lon)
+    
     
 if __name__ == "__main__":
         
@@ -60,11 +72,12 @@ if __name__ == "__main__":
     df_final = df_final.append(df_chain)
     df_final = df_final.append(df_reg)
     df_final = df_final.reset_index(drop = True)
-    print 'sqlite:///'+ DB_FILE
+
     
     engine = create_engine('sqlite:///'+ DB_FILE)
     c = engine.connect()
-
     conn = c.connection
     df_final.to_sql("stores", con = conn)
+#    add_stores(df_final)    
 
+#    print 'sqlite:///'+ DB_FILE
