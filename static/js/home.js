@@ -69,14 +69,23 @@ function initMap() {
     map: map
   });
 
-  // var groc_image = {% static "../images/groc_store.png" %};
+  var groc_image = {
+    url: 'static/images/groc_store_final.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(35, 32),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(0, 32)
+  }
+
   var len = stores.length;
   for (var i = 0; i<len; i++) {
 
     var groc = new google.maps.Marker({
        position: {lat: stores[i][2], lng:stores[i][3] },
        map: map,
-      //  icon: groc_image
+       icon: groc_image
     });
     grocery.push(groc);
   }
@@ -173,7 +182,7 @@ function toggleGrocerymap(){
       var groc = new google.maps.Marker({
          position: {lat: stores[i][2], lng:stores[i][3] },
          map: map,
-        //  icon: groc_image
+         icon: groc_image
       });
       grocery.push(groc);
     }
