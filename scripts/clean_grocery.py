@@ -73,7 +73,6 @@ if __name__ == "__main__":
     df_final = df_final.append(df_chain)
     df_final = df_final.append(df_reg)
     df_final = df_final.reset_index(drop = True)
-#    print 'sqlite:///'+ DB_FILE
 
     
 
@@ -82,6 +81,7 @@ if __name__ == "__main__":
     conn = c.connection
     df_final.to_sql("stores", con = conn)
 
+#    print 'sqlite:///'+ DB_FILE
 
 #    add_stores(df_final)    
 

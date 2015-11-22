@@ -30,13 +30,15 @@ function initMap() {
   var latlng = new google.maps.LatLng(41.8369, -87.6847);
   var mapOptions = {
     zoom: 10,
-    center: latlng
+    center: latlng,
+    styles: styleArray
   }
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
   heatmap = new google.maps.visualization.HeatmapLayer({
     data: getPoints(),
-    map: map
+    map: map,
+    gradient: gradient
   });
 
   gangLayer = new google.maps.KmlLayer({
@@ -56,7 +58,62 @@ function initMap() {
     });
     grocery.push(groc);
   }
+  var gradient = [
+  	'rgba(0, 255, 255, 0)',
+    // 'rgba(0, 255, 255, 1)',
+   //  'rgba(0, 191, 255, 1)',
+   //  'rgba(0, 127, 255, 1)',
+   //  'rgba(0, 63, 255, 1)',
+   //  'rgba(0, 0, 255, 1)',
+   //  'rgba(0, 0, 223, 1)',
+   //  'rgba(0, 0, 191, 1)',
+   //  'rgba(0, 0, 159, 1)',
+   //  'rgba(0, 0, 127, 1)',
+   //  'rgba(63, 0, 91, 1)',
+   //  'rgba(127, 0, 63, 1)',
+   //  'rgba(191, 0, 31, 1)',
+   //  'rgba(255, 0, 0, 1)']
+		// 'rgb(255, 225, 101)',
+		
+		'rgb(251, 209, 65)',
+		// 'rgb(248, 193, 94)'
+		// 'rgb(241, 161, 87)',
+		// 'rgb(238, 145, 83)',
+		// 'rgb(235, 129, 80)',
+		// 'rgb(231, 113, 76)',
+		// 'rgb(228, 97, 73)',
+		// 'rgb(225, 81, 61)',
+		// 'rgb(222, 66, 66)'
+	]
+	heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
+
+
+
+var styleArray = [
+  {
+    featureType: "all",
+    stylers: [
+      { hue: "#84243b"},
+      { saturation: -85 },
+      {invert_lightness:true}
+
+    ]
+  },{
+    featureType: "road.arterial",
+    elementType: "geometry",
+    stylers: [
+      { hue: "#00ffee" },
+      { saturation: 20 }
+    ]
+  },{
+    featureType: "poi.business",
+    elementType: "labels",
+    stylers: [
+      { visibility: "off" }
+    ]
+  }
+];
 
 function toggleHeatmap() {
   heatmap.setMap(heatmap.getMap() ? null : map);
@@ -88,10 +145,19 @@ function toggleGrocerymap(){
 
 // fixme this should be areas of highest risk
 function getPoints() {
-return [
-  new google.maps.LatLng(41.8369, -87.6847),
-  new google.maps.LatLng(41.8269, -87.6847),
-  new google.maps.LatLng(41.8169, -87.6847),
-  new google.maps.LatLng(41.8069, -87.6847),
-  new google.maps.LatLng(41.7969, -87.6847)]
+var heat = []
+
+for (var i = 0; i< stores.length; i ++){
+	heat.push( new google.maps.LatLng(stores[i][2],stores[i][3])) 
 }
+console.log(heat)
+return heat
+}
+
+
+
+
+// COLOR GRADIENTS: BOURBON 1. #EC6F66, #F3A183
+//#d53369,  #cbad6d 
+//yellow -> red
+// #c21500,  #ffc500
