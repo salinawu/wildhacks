@@ -23,40 +23,71 @@ function geocode() {
           map: map,
           position: results[0].geometry.location
       });
+
       map.setZoom(16);
       markers.push(marker);
-      console.log(results[0].formatted_address);
+      // console.log(results[0].geometry.location;
       var length = stores.length;
-      for (var j=0; j<10; j++) {
-        // console.log(j);
-        var service = new google.maps.DistanceMatrixService;
-        service.getDistanceMatrix({
-          origins: [results[0].formatted_address],
-          destinations: [{lat: stores[j][2], lng:stores[j][3] }],
-          travelMode: google.maps.TravelMode.WALKING,
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false
-        }, function(response, status) {
-          if (status !== google.maps.DistanceMatrixStatus.OK) {
-            alert('Error was: ' + status);
-          } else {
-            var results = response.rows[0].elements[0];
-            var distance = results.distance.text;
-            if (init==0) {
-              min = distance;
-              init =1;
-            }
-            if (distance < min) {
-              final_dest = response.destinationAddresses[0]
-              min = distance
-            };
-          }
-        });
-      };
+
+      var cur_lat = results[0].geometry.location.lat();
+      var cur_lon = results[0].geometry.location.lng();
+      var lowest = []
+      for (var k = 0; k < length; k++){
+        var temp_lat = stores[k][2];
+        var temp_lon = stores[k][3];
+        var diff = Math.abs(temp_lat+temp_lon - cur_lat-cur_lon);
+        if(k ==0 || diff<= lowest[0]){
+          lowest = [diff,temp_lat,temp_lon];
+        }
+      min = lowest[0];
+      console.log(min);
+
+      }
+      // for (var k = 0; k <length; k ++){
+      //  
+      //   
+      //   
+      //   if(k == 0){
+      //     lowest = [diff,temp_lat,temp_lon];
+      //   };
+      //   else if(diff <= lowest[0]){
+      //     lowest = [diff,temp_lat,temp_lon];
+
+      //   };
+      // };
+      // min = lowest[0];
+      // console.log(min);
+      // for (var j=0; j<10; j++) {
+      //   // console.log(j);
+      //   var service = new google.maps.DistanceMatrixService;
+      //   service.getDistanceMatrix({
+      //     origins: [results[0].formatted_address],
+      //     destinations: [{lat: stores[j][2], lng:stores[j][3] }],
+      //     travelMode: google.maps.TravelMode.WALKING,
+      //     unitSystem: google.maps.UnitSystem.METRIC,
+      //     avoidHighways: false,
+      //     avoidTolls: false
+      //   }, function(response, status) {
+      //     if (status !== google.maps.DistanceMatrixStatus.OK) {
+      //       alert('Error was: ' + status);
+      //     } else {
+      //       var results = response.rows[0].elements[0];
+      //       var distance = results.distance.text;
+      //       if (init==0) {
+      //         min = distance;
+      //         init =1;
+      //       }
+      //       if (distance < min) {
+      //         final_dest = response.destinationAddresses[0]
+      //         min = distance
+      //       };
+      //     }
+      //   });
+      // };
+
+      final_dest = [String(lowest[1]),String(lowest[2])];
       var directionsService = new google.maps.DirectionsService;
       var directionsDisplay = new google.maps.DirectionsRenderer;
-      console.log(final_dest);
       directionsDisplay.setMap(map);
       calculateAndDisplayRoute(directionsService, directionsDisplay);
     } else {
@@ -139,7 +170,7 @@ function initMap() {
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-  alert('hi');
+  alert("hi");
   directionsService.route({
     origin: document.getElementById('address').value,
     destination: final_dest,
