@@ -12,6 +12,7 @@
 <div id="floating-panel">
      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
      <button onclick="toggleKMLmap()">Toggle separation of regions</button>
+     <button onclick="toggleGrocerymap()">Toggle grocery stores</button>
 </div>
 <head>
     <style type="text/css">
@@ -22,9 +23,12 @@
 <body>
   <div id="map"></div>
 </body>
-<script src="{% static "js/home.js" %}">
+<script>
+
+  var stores = {{groc_stores|safe}}
 
 </script>
+<script src="{% static "js/home.js" %}"></script>
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBE4ApaPZF2pyVQYPyPC6X4AnWdySc-584&libraries=visualization&callback=initMap">
 </script>

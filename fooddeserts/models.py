@@ -11,7 +11,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-
 class Stores(models.Model):
     index = models.IntegerField(blank=True, null=True)
     store_type = models.TextField(db_column='STORE_TYPE', blank=True, null=True)  # Field name made lowercase.

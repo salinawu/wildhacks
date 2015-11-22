@@ -3,6 +3,7 @@ var map;
 var heatmap;
 var gangLayer;
 var markers = [];
+var grocery = [];
 
 function geocode() {
   var address = document.getElementById("address").value;
@@ -42,6 +43,19 @@ function initMap() {
     url: 'https://raw.githubusercontent.com/salinawu/wildhacks/master/chicago_gang_map.kml',
     map: map
   });
+
+  // var groc_image = {% static "../images/groc_store.png" %};
+  var len = stores.length;
+  console.log(len)
+  for (var i = 0; i<len; i++) {
+
+    var groc = new google.maps.Marker({
+       position: {lat: stores[i][2], lng:stores[i][3] },
+       map: map,
+      //  icon: groc_image
+    });
+    grocery.push(groc);
+  }
 }
 
 function toggleHeatmap() {
@@ -50,6 +64,26 @@ function toggleHeatmap() {
 
 function toggleKMLmap() {
   gangLayer.setMap(gangLayer.getMap() ? null : map);
+}
+
+function toggleGrocerymap(){
+  if (grocery.length>0) {
+    for (var i = 0; i < grocery.length; i++) {
+      grocery[i].setMap(null);
+    }
+    grocery = [];
+  } else {
+    var len = stores.length;
+    for (var i = 0; i<len; i++) {
+
+      var groc = new google.maps.Marker({
+         position: {lat: stores[i][2], lng:stores[i][3] },
+         map: map,
+        //  icon: groc_image
+      });
+      grocery.push(groc);
+    }
+  }
 }
 
 // fixme this should be areas of highest risk
